@@ -1,0 +1,135 @@
+<h2 mat-dialog-title>{{ data?.stockItem ? 'Edit Vehicle' : 'Add Vehicle' }}</h2>
+
+<form [formGroup]="stockForm" (ngSubmit)="submit()" >
+  <mat-dialog-content>
+
+    <div class="two-fields">
+  <!-- Make -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Make</mat-label>
+    <input matInput formControlName="make" required />
+  </mat-form-field>
+
+  <!-- Model -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Model</mat-label>
+    <input matInput formControlName="model" required />
+  </mat-form-field>
+  </div>
+
+     <div class="two-fields">
+  <!-- Year -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Year</mat-label>
+    <input matInput type="number" formControlName="modelYear" />
+  </mat-form-field>
+
+  <!-- KMs -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Kilometers</mat-label>
+    <input matInput type="number" formControlName="kms" />
+  </mat-form-field>
+  </div>
+
+  <div class="two-fields">
+  <!-- Colour -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Colour</mat-label>
+    <input matInput formControlName="colour" />
+  </mat-form-field>
+
+  <!-- VIN -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>VIN</mat-label>
+    <input matInput formControlName="vin" />
+  </mat-form-field>
+  </div>
+
+    <div class="two-fields">
+  <!-- Retail Price -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Retail Price</mat-label>
+    <input matInput type="number" formControlName="retailPrice" />
+  </mat-form-field>
+
+  <!-- Cost Price -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Cost Price</mat-label>
+    <input matInput type="number" formControlName="costPrice" />
+  </mat-form-field>
+  </div>
+
+  <!-- Reg No -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Registration No</mat-label>
+    <input matInput formControlName="regNo" />
+  </mat-form-field>
+
+  <!-- Accessories -->
+<div class="accessories-section" formArrayName="accessories">
+  <h3>Accessories</h3>
+
+  <div *ngFor="let acc of accessories.controls; let i = index" [formGroupName]="i" class="accessory-item two-fields">
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description" />
+    </mat-form-field>
+
+    <button mat-icon-button color="warn" type="button" (click)="removeAccessory(i)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+
+  <button mat-stroked-button type="button" color="primary" (click)="addAccessory()">
+    <mat-icon>add</mat-icon> Add Accessory
+  </button>
+</div>
+
+  <!-- Images -->
+<div class="images-section">
+  <h3>Images (max {{ maxImages }})</h3>
+
+  <!-- Hidden file input -->
+  <input type="file" multiple accept="image/*" #fileInput (change)="onFilesSelected($event)" hidden />
+
+  <!-- Upload button -->
+  <button mat-stroked-button type="button" color="primary" (click)="fileInput.click()" class="upload-button">
+    <mat-icon>upload</mat-icon> Upload Images
+  </button>
+
+  <!-- Previews -->
+<div class="image-preview">
+
+  <!-- Existing images -->
+  <div *ngFor="let img of existingImages; let i = index" class="preview-item">
+    <img [src]="img.url" alt="preview" class="thumb" />
+    <button mat-icon-button color="warn" type="button" (click)="removeImage(i, true)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Newly uploaded images -->
+  <div *ngFor="let file of imageFiles; let i = index" class="preview-item">
+    <img [src]="imagePreviews[existingImages.length + i]" alt="preview" class="thumb" />
+    <button mat-icon-button color="warn" type="button" (click)="removeImage(i, false)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+</div>
+</div>
+  </mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">Cancel</button>
+  <button mat-raised-button color="primary" type="submit" [disabled]="!stockForm.valid">Save</button>
+</mat-dialog-actions>
+</form>
+
+
